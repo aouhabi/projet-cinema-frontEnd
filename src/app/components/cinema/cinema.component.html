@@ -1,0 +1,48 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3">
+            <ul *ngIf="villes" class="list-group">
+                <li *ngFor="let ville of villes" class="list-group-item" [ngClass]="ville == currentVille?'active':''"
+                (click)="onGetCinema(ville)"
+                >{{ville.name}}</li>
+            </ul>
+
+        </div>
+        <div class="col-md-9">
+            <div class="panel-default">
+                <div class="panel-heading">Listes des cinema </div>
+                <div class="panel-body">
+                  <ul *ngIf="cinemas" class="nav nav-pills">
+                  <li *ngFor="let cinema of cinemas"  [ngClass]="cinema == currentCinema?'active':''">
+                    <a (click)="onGetSalles(cinema)">{{cinema.name}}</a>
+                  </li>
+                  </ul>
+                </div>
+              <div class="row" *ngIf="salles">
+                <div *ngFor="let salle of salles"  class="col-md-6" >
+                 <div class="panel-default">
+                   <div class="panel-heading">{{salle.name}}</div>
+                   <div class="panel-body" *ngIf="salle.projection">
+                     <div class="row">
+                       <div class="col-md-6">
+                         <img src="{{HOST+'/images/'+salle.projection[0].film.id}}" />
+                       </div>
+                       <div class="col-md-6">
+                        <ul class="list-group"  style="height: 233px">
+                          <li class="list-group-item">Seances :</li>
+                          <li *ngFor="let projection of salle.projection" class="list-group-item" [ngClass]="projection == currentSeance?'active':''" (click)="onGetPlaces(projection)">
+                            {{projection.seance.heureDebut}} Prix :{{projection.prix | number:"0.00"}} Euros
+                          </li>
+                        </ul>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+</div>

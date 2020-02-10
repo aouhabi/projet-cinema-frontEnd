@@ -48,6 +48,16 @@ public getCinemas(ville : Ville): Observable<Cinema[]>{
     );
   }
 
+  getTicketPlaces(projection: any):Observable<any> {
+    let url = projection["_links"].tickets.href.replace("{?projection}","?projection=p2");
+    return this.http.get<any>(url).pipe(
+        tap(_=> this.log("fetched ticketsPlace")),
+        catchError(this.handleError("getTicketPlaces", []))
+
+    );
+
+  }
+
   private log(log :string): void{
     console.info(log);
   }
@@ -60,6 +70,7 @@ public getCinemas(ville : Ville): Observable<Cinema[]>{
    }
 
   }
+
 
 
 }

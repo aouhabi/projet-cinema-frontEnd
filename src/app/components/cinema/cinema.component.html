@@ -20,22 +20,31 @@
                   </ul>
                 </div>
               <div class="row" *ngIf="salles">
-                <div *ngFor="let salle of salles"  class="col-md-6" >
+                <div *ngFor="let salle of salles"  class="col-md-12" >
                  <div class="panel-default">
                    <div class="panel-heading">{{salle.name}}</div>
                    <div class="panel-body" *ngIf="salle.projection">
                      <div class="row">
-                       <div class="col-md-6">
+                       <div class="col-md-2">
                          <img src="{{HOST+'/images/'+salle.projection[0].film.id}}" />
                        </div>
-                       <div class="col-md-6">
+                       <div class="col-md-4">
                         <ul class="list-group"  style="height: 233px">
                           <li class="list-group-item">Seances :</li>
-                          <li *ngFor="let projection of salle.projection" class="list-group-item" [ngClass]="projection == currentSeance?'active':''" (click)="onGetPlaces(projection)">
+                          <li *ngFor="let projection of salle.projection" class="list-group-item" [ngClass]="projection == currentSeance?'active':''" (click)="onGetTicketPlaces(projection)">
                             {{projection.seance.heureDebut}} Prix :{{projection.prix | number:"0.00"}} Euros
                           </li>
                         </ul>
                        </div>
+
+                         <div class="col-md-4" *ngIf="currentSeance && currentSeance.tickets">
+                             <ng-container *ngIf="currentSeance.salle.id==salle.id">
+                                 <button   *ngFor="let t of currentSeance.tickets" [disabled]="t.reserve" [ngClass]="t.reserve?'btn btn-warning ticket':'btn btn-success ticket'" >
+                                     {{t.place.numero}}
+                                 </button>
+                             </ng-container>
+
+                         </div>
                      </div>
                    </div>
                  </div>

@@ -15,6 +15,7 @@ export class CinemaComponent implements OnInit {
 
   public villes : Ville[];
   public cinemas : Cinema[];
+  public places : any;
   public currentVille : Ville ;
   public currentCinema : Cinema ;
   public currentSeance : any ;
@@ -30,6 +31,7 @@ export class CinemaComponent implements OnInit {
   }
 
   public onGetCinema(ville : Ville){
+    this.init();
     this.currentVille = ville ;
     this.cinemaServices.getCinemas(ville).subscribe(data => {
       this.cinemas = data["_embedded"].cinemas;
@@ -50,8 +52,17 @@ export class CinemaComponent implements OnInit {
     })
   }
 
-  onGetPlaces(projection: any) {
+  onGetTicketPlaces(projection: any) {
     this.currentSeance = projection ;
-    console.log(projection)
+    console.log(projection);
+    this.cinemaServices.getTicketPlaces(projection).subscribe(data => {
+      this.currentSeance.tickets = data["_embedded"].tickets;
+    })
+  }
+
+  init(){
+    this.currentSeance = null;
+    this.salles=null;
+
   }
 }

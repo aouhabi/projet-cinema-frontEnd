@@ -36,15 +36,26 @@
                           </li>
                         </ul>
                        </div>
-
-                         <div class="col-md-4" *ngIf="currentSeance && currentSeance.tickets">
+                       <div class="col-md-3" *ngIf="currentSeance && currentSeance.tickets">
                              <ng-container *ngIf="currentSeance.salle.id==salle.id">
-                                 <button   *ngFor="let t of currentSeance.tickets" [disabled]="t.reserve" [ngClass]="t.reserve?'btn btn-warning ticket':'btn btn-success ticket'" >
+                                 <button  (click)="onSelectTicket(t)" *ngFor="let t of currentSeance.tickets" [disabled]="t.reserve" [class]="setTicketClass(t)">
                                      {{t.place.numero}}
                                  </button>
                              </ng-container>
 
                          </div>
+                       <div class="col-md-3" *ngIf="selectedTickets.length >0">
+                         <form #f="ngForm" (ngSubmit)="onPayeTickets(f.value)">
+                          <div class="form-group">
+                            <label class="control-label">Nom client</label>
+                            <input class="form-control" type="text" name="nameClient" ngModel/>
+                            <label class="control-label">Code payement</label>
+                            <input class="form-control" type="number" name="codepayement" ngModel/>
+                          </div>
+                            <button type="submit" class="btn btn-success">Payement</button>
+
+                         </form>
+                       </div>
                      </div>
                    </div>
                  </div>

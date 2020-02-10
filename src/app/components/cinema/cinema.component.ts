@@ -21,7 +21,8 @@ export class CinemaComponent implements OnInit {
   public currentSeance : any ;
   public salles: Salle[];
   public HOST = Constants.HOST ;
-
+  public ticketClass="btn btn-success ticket";
+  public selectedTickets=[];
   constructor(private cinemaServices : CinemaService) { }
 
   ngOnInit(): void {
@@ -57,12 +58,57 @@ export class CinemaComponent implements OnInit {
     console.log(projection);
     this.cinemaServices.getTicketPlaces(projection).subscribe(data => {
       this.currentSeance.tickets = data["_embedded"].tickets;
+      this.selectedTickets = []
+      //this.setTicketClass()
     })
   }
 
+  onPayeTickets(form:any) {
+    let listTicketId=[];
+    this.selectedTickets.forEach(ticket =>{
+      listTicketId.push(ticket.id);
+    });
+    form.listTicketId = listTicketId ;
+
+    this.cinemaServices.payerTickets(form).subscribe(data => {
+
+      alert("Ticket reservés avec succés !!");
+      console.log("payement effectuer !");
+      console.log(data);
+      this.onGetTicketPlaces(this.currentSeance)
+      //this.setTicketClass()
+    })
+  }
+
+
+  onSelectTicket(ticket: any) {
+
+    if(! ticket.selected){
+      ticket.selected=true;
+      this.selectedTickets.push(ticket)
+      console.log(this.selectedTickets)
+    }else {
+      ticket.selected=false;
+      this.selectedTickets.splice(this.selectedTickets.indexOf(ticket),1);
+      console.log(this.selectedTickets)
+    }
+  }
   init(){
     this.currentSeance = null;
     this.salles=null;
 
   }
+
+
+  public setTicketClass(ticket:any) {
+    let cls = "btn ticket ";
+    if (ticket.reserve){
+      return cls+"btn-danger";
+    }else if(ticket.selected){
+      return cls+"btn-warning"
+    }
+    return  cls+" btn-success"
+  }
+
+
 }

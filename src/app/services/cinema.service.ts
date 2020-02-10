@@ -57,7 +57,14 @@ public getCinemas(ville : Ville): Observable<Cinema[]>{
     );
 
   }
+  payerTickets(form: any):Observable<any> {
 
+    return this.http.post(Constants.HOST+"/payerTickets",form).pipe(
+      tap(_=> this.log("post  payerTickets")),
+      catchError(this.handleError("payerTickets", []))
+
+    );;
+  }
   private log(log :string): void{
     console.info(log);
   }
